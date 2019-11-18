@@ -417,6 +417,7 @@ install_shadowsocks(){
     cd ${cur_dir}
     tar zxf ${shadowsocks_libev_ver}.tar.gz
     cd ${shadowsocks_libev_ver}
+    autoreconf --verbose --install --force -I m4
     ./configure CFLAGS="-march=native -O2 -pipe -fno-plt" CXXFLAGS="-march=native -O2 -pipe -fno-plt" LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -s" --disable-documentation --disable-silent-rules --disable-assert --disable-ssp
     make && make install
     if [ $? -eq 0 ]; then
