@@ -352,7 +352,7 @@ install_libsodium() {
         cd ${cur_dir}
         tar zxf ${libsodium_file}.tar.gz
         cd ${libsodium_file}
-        ./configure --prefix=/usr && make && make install
+        ./configure CFLAGS="-march=native -O2 -pipe -fno-plt" CXXFLAGS="-march=native -O2 -pipe -fno-plt" LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now" --prefix=/usr --enable-minimal && make && make install
         if [ $? -ne 0 ]; then
             echo -e "[${red}Error${plain}] ${libsodium_file} install failed."
             exit 1
@@ -367,8 +367,7 @@ install_mbedtls() {
         cd ${cur_dir}
         tar xf ${mbedtls_file}-gpl.tgz
         cd ${mbedtls_file}
-        make SHARED=1 CFLAGS=-fPIC
-        make DESTDIR=/usr install
+        cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PROGRAMS=0 -DUSE_SHARED_MBEDTLS_LIBRARY=1 -DUSE_STATIC_MBEDTLS_LIBRARY=0 -DCMAKE_INSTALL_PREFIX=/usr && make && make install
         if [ $? -ne 0 ]; then
             echo -e "[${red}Error${plain}] ${mbedtls_file} install failed."
             exit 1
