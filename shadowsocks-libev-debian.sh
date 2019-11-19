@@ -352,7 +352,7 @@ install_libsodium() {
         cd ${cur_dir}
         tar zxf ${libsodium_file}.tar.gz
         cd ${libsodium_file}
-        ./configure CFLAGS="-march=native -O2 -pipe -fno-plt" CXXFLAGS="-march=native -O2 -pipe -fno-plt" LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now" --prefix=/usr --enable-minimal && make && make install
+        ./autogen.sh;./configure LDFLAGS="-s" --prefix=/usr --enable-opt --with-pthreads --disable-ssp --disable-pie && make && make install
         if [ $? -ne 0 ]; then
             echo -e "[${red}Error${plain}] ${libsodium_file} install failed."
             exit 1
@@ -417,8 +417,7 @@ install_shadowsocks(){
     cd ${cur_dir}
     tar zxf ${shadowsocks_libev_ver}.tar.gz
     cd ${shadowsocks_libev_ver}
-    autoreconf --verbose --install --force -I m4
-    ./configure CFLAGS="-march=native -O2 -pipe -fno-plt" CXXFLAGS="-march=native -O2 -pipe -fno-plt" LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -s" --disable-documentation --disable-silent-rules --disable-assert --disable-ssp
+    ./autogen.sh;./configure CFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" CXXFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" LDFLAGS="-s" --disable-documentation --disable-silent-rules --disable-assert --disable-ssp
     make && make install
     if [ $? -eq 0 ]; then
         chmod +x /etc/init.d/shadowsocks
