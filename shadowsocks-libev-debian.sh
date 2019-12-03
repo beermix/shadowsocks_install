@@ -317,7 +317,7 @@ pre_install(){
     # Update System
     apt-get -y update
     # Install necessary dependencies
-    apt-get -y --no-install-recommends install gettext build-essential autoconf automake libtool openssl libssl-dev zlib1g-dev libpcre3-dev libev-dev libc-ares-dev cmake
+    apt-get -y --no-install-recommends install gettext build-essential autoconf automake libtool openssl libssl-dev zlib1g-dev libpcre3-dev libev-dev libc-ares-dev cmake libcorkipset-dev libbloom-dev libcork-dev
 }
 
 download() {
@@ -417,7 +417,7 @@ install_shadowsocks(){
     cd ${cur_dir}
     tar zxf ${shadowsocks_libev_ver}.tar.gz
     cd ${shadowsocks_libev_ver}
-    ./autogen.sh;./configure CFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" CXXFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" LDFLAGS="-s" --disable-documentation --disable-silent-rules --disable-assert --disable-ssp
+    ./configure CFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" CXXFLAGS="-march=native -O3 -pipe -fomit-frame-pointer" LDFLAGS="-s" --disable-documentation --disable-silent-rules --disable-assert --disable-ssp
     make && make install
     if [ $? -eq 0 ]; then
         chmod +x /etc/init.d/shadowsocks
